@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 
 const TRACK_URL =
-  'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Cyber%20Trap%20Type%20Beat%20_Chroma_-i4hFdMtPbFIuyH9XgMNUHTRdAYfU2b.mp3'
+  'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Cyber%20Trap%20Type%20Beat%20_Chroma_-z956eEwigj0O5tqLldFx91MYhKVciZ.mp3'
 
 const BAR_COUNT = 20
 
