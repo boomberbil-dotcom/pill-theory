@@ -6,6 +6,7 @@ const EMERGING_IMAGES: Record<string, string> = {
   doomer:     'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/doomer-LWsKjPjnZdQstYpJy9T8uCig9nsSFO.png',
   acc:        'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/acceleration-SGk1I75Sfqc03g2FdjUZED2pXXrHzZ.png',
   simulation: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/simulation-W5VQ2IUs8ttwDHFk6ArKkTlTMcVtCx.png',
+  zoom:       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/zoomer-3xCdGNcQPAT1Li70pJ1GGwLn7zaISa.png',
 }
 
 export default function EmergingPills() {

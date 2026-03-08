@@ -19,10 +19,6 @@ export const metadata: Metadata = {
   title: 'Pill Theory — Archive of Ideological Awakenings',
   description: 'A digital archive of ideological awakenings and internet philosophy.',
   generator: 'v0.app',
-  icons: {
-    icon: '/logo.png',
-    apple: '/logo.png',
-  },
 }
 
 export default function RootLayout({
