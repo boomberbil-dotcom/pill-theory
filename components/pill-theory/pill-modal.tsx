@@ -15,13 +15,12 @@ const PILL_IMAGES: Record<string, string> = {
   pump:   'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/green-LX18KwT0WCGURCOX4apyu3BSMGunPm.png',
 }
 
-type Tab = 'overview' | 'history' | 'culture' | 'media' | 'research'
+type Tab = 'overview' | 'history' | 'culture' | 'media'
 const TABS: { key: Tab; label: string }[] = [
   { key: 'overview', label: 'Overview' },
   { key: 'history', label: 'History' },
   { key: 'culture', label: 'Culture' },
   { key: 'media', label: 'Media' },
-  { key: 'research', label: 'Research' },
 ]
 
 interface Props {
@@ -143,100 +142,87 @@ export default function PillModal({ pill, onClose }: Props) {
             {pill[activeTab]}
           </p>
 
-          {activeTab === 'research' && (
+          {activeTab === 'overview' && (
             <>
+              {/* Stats */}
+              <div className="mt-8 pt-6 border-t border-white/10">
+                <div className="grid grid-cols-2 gap-4 mb-10">
+                  <div>
+                    <p className="font-mono text-xs text-white/30 uppercase tracking-widest mb-1">Period</p>
+                    <p className="font-sans font-bold text-white">{pill.year}</p>
+                  </div>
+                  <div>
+                    <p className="font-mono text-xs text-white/30 uppercase tracking-widest mb-1">Catalyst</p>
+                    <p className="font-sans text-sm text-white/60 leading-relaxed">{pill.culturalMoment}</p>
+                  </div>
+                </div>
+              </div>
+
               {/* Video Archive */}
-              <div className="mt-10">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="font-mono text-xs tracking-[0.3em] uppercase" style={{ color: pill.color }}>
-                    Video Archive
-                  </span>
-                  <div className="flex-1 h-px bg-white/10" aria-hidden="true" />
-                </div>
-                <div className="flex flex-col gap-4">
-                  {pill.videos.map((url, i) => {
-                    const videoId = url.split('v=')[1]?.split('&')[0]
-                    return (
-                      <div
-                        key={i}
-                        className="relative w-full overflow-hidden rounded-sm border"
-                        style={{
-                          paddingBottom: '56.25%',
-                          borderColor: 'rgba(255,255,255,0.1)',
-                          boxShadow: `0 0 16px ${pill.color}22`,
-                        }}
-                      >
-                        <iframe
-                          src={`https://www.youtube.com/embed/${videoId}`}
-                          title={`${pill.name} video ${i + 1}`}
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                          className="absolute inset-0 w-full h-full"
-                          style={{ border: 'none' }}
-                        />
-                      </div>
-                    )
-                  })}
-                </div>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="font-mono text-xs tracking-[0.3em] uppercase" style={{ color: pill.color }}>
+                  Video Archive
+                </span>
+                <div className="flex-1 h-px bg-white/10" aria-hidden="true" />
+              </div>
+              <div className="flex flex-col gap-4 mb-10">
+                {pill.videos.map((url, i) => {
+                  const videoId = url.split('v=')[1]?.split('&')[0]
+                  return (
+                    <div
+                      key={i}
+                      className="relative w-full overflow-hidden rounded-sm border"
+                      style={{ paddingBottom: '56.25%', borderColor: 'rgba(255,255,255,0.1)' }}
+                    >
+                      <iframe
+                        src={`https://www.youtube.com/embed/${videoId}`}
+                        title={`${pill.name} video ${i + 1}`}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className="absolute inset-0 w-full h-full"
+                        style={{ border: 'none' }}
+                      />
+                    </div>
+                  )
+                })}
               </div>
 
               {/* Articles */}
-              <div className="mt-10">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="font-mono text-xs tracking-[0.3em] uppercase" style={{ color: pill.color }}>
-                    Articles
-                  </span>
-                  <div className="flex-1 h-px bg-white/10" aria-hidden="true" />
-                </div>
-                <div className="flex flex-col gap-2.5">
-                  {pill.articles.map((url, i) => {
-                    const label = decodeURIComponent(url.split('/').pop()?.replace(/_/g, ' ') ?? url)
-                    return (
-                      <a
-                        key={i}
-                        href={url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-between gap-3 px-4 py-3 border bg-white/[0.02] transition-all group"
-                        style={{ borderColor: 'rgba(255,255,255,0.08)' }}
-                        onMouseEnter={e => (e.currentTarget.style.borderColor = pill.color + '88')}
-                        onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)')}
+              <div className="flex items-center gap-3 mb-4">
+                <span className="font-mono text-xs tracking-[0.3em] uppercase" style={{ color: pill.color }}>
+                  Articles
+                </span>
+                <div className="flex-1 h-px bg-white/10" aria-hidden="true" />
+              </div>
+              <div className="flex flex-col gap-2.5">
+                {pill.articles.map((url, i) => {
+                  const label = decodeURIComponent(url.split('/').pop()?.replace(/_/g, ' ') ?? url)
+                  return (
+                    <a
+                      key={i}
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between gap-3 px-4 py-3 border bg-white/[0.02] transition-all group"
+                      style={{ borderColor: 'rgba(255,255,255,0.08)' }}
+                      onMouseEnter={e => (e.currentTarget.style.borderColor = pill.color + '88')}
+                      onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)')}
+                    >
+                      <span className="font-mono text-xs text-white/50 group-hover:text-white truncate transition-colors">
+                        {label}
+                      </span>
+                      <svg
+                        className="shrink-0 w-3 h-3 text-white/20 group-hover:text-white transition-colors"
+                        fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"
+                        aria-hidden="true"
                       >
-                        <span className="font-mono text-xs text-white/50 group-hover:text-white truncate transition-colors">
-                          {label}
-                        </span>
-                        <svg
-                          className="shrink-0 w-3 h-3 text-white/20 group-hover:text-white transition-colors"
-                          style={{ color: 'inherit' }}
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                          viewBox="0 0 24 24"
-                          aria-hidden="true"
-                        >
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                      </a>
-                    )
-                  })}
-                </div>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </a>
+                  )
+                })}
               </div>
             </>
-          )}
-
-          {activeTab === 'overview' && (
-            <div className="mt-8 pt-6 border-t border-white/10">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="font-mono text-xs text-white/30 uppercase tracking-widest mb-1">Period</p>
-                  <p className="font-sans font-bold text-white">{pill.year}</p>
-                </div>
-                <div>
-                  <p className="font-mono text-xs text-white/30 uppercase tracking-widest mb-1">Catalyst</p>
-                  <p className="font-sans text-sm text-white/60 leading-relaxed">{pill.culturalMoment}</p>
-                </div>
-              </div>
-            </div>
           )}
         </div>
 

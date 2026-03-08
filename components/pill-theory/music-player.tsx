@@ -7,13 +7,13 @@ const TRACK_URL =
 
 const BAR_COUNT = 20
 
-// Shared audio element singleton so Hero can trigger it too
 let sharedAudio: HTMLAudioElement | null = null
 let sharedCtx: AudioContext | null = null
 let sharedAnalyser: AnalyserNode | null = null
 let sharedConnected = false
 
 export function getSharedAudio() {
+  if (typeof window === 'undefined') return null
   if (!sharedAudio) {
     sharedAudio = new Audio(TRACK_URL)
     sharedAudio.loop = true
@@ -22,20 +22,21 @@ export function getSharedAudio() {
   return sharedAudio
 }
 
-export function getSharedAnalyser(): AnalyserNode | null {
-  if (!sharedAudio) return null
+export function initSharedAudio() {
+  const audio = getSharedAudio()
+  if (!audio) return
   if (!sharedCtx) {
     sharedCtx = new AudioContext()
     sharedAnalyser = sharedCtx.createAnalyser()
     sharedAnalyser.fftSize = 64
   }
   if (!sharedConnected) {
-    const src = sharedCtx.createMediaElementSource(sharedAudio)
-    src.connect(sharedAnalyser)
+    const src = sharedCtx.createMediaElementSource(audio)
+    src.connect(sharedAnalyser!)
     sharedAnalyser!.connect(sharedCtx.destination)
     sharedConnected = true
   }
-  return sharedAnalyser
+  if (sharedCtx.state === 'suspended') sharedCtx.resume()
 }
 
 export default function MusicPlayer({ playing }: { playing: boolean }) {
@@ -43,61 +44,54 @@ export default function MusicPlayer({ playing }: { playing: boolean }) {
   const [localPlaying, setLocalPlaying] = useState(false)
   const barsRef = useRef<(HTMLDivElement | null)[]>([])
   const rafRef = useRef<number>(0)
-  const analyserRef = useRef<AnalyserNode | null>(null)
   const dataRef = useRef<Uint8Array>(new Uint8Array(32))
 
-  // Sync play/pause driven by parent
+  // When parent signals play, start audio
   useEffect(() => {
+    if (!playing) return
     const audio = getSharedAudio()
-    if (playing) {
-      if (sharedCtx?.state === 'suspended') sharedCtx.resume()
-      analyserRef.current = getSharedAnalyser()
-      if (analyserRef.current) {
-        dataRef.current = new Uint8Array(analyserRef.current.frequencyBinCount)
-      }
-      audio.play().catch(() => {})
-      setLocalPlaying(true)
-    } else {
-      audio.pause()
-      setLocalPlaying(false)
+    if (!audio) return
+    initSharedAudio()
+    if (sharedAnalyser) {
+      dataRef.current = new Uint8Array(sharedAnalyser.frequencyBinCount)
     }
+    audio.play().then(() => {
+      setLocalPlaying(true)
+    }).catch(() => {})
   }, [playing])
 
   const togglePlay = useCallback(() => {
     const audio = getSharedAudio()
+    if (!audio) return
     if (localPlaying) {
       audio.pause()
       setLocalPlaying(false)
     } else {
-      if (sharedCtx?.state === 'suspended') sharedCtx.resume()
-      analyserRef.current = getSharedAnalyser()
-      if (analyserRef.current) {
-        dataRef.current = new Uint8Array(analyserRef.current.frequencyBinCount)
+      initSharedAudio()
+      if (sharedAnalyser) {
+        dataRef.current = new Uint8Array(sharedAnalyser.frequencyBinCount)
       }
-      audio.play().catch(() => {})
-      setLocalPlaying(true)
+      audio.play().then(() => setLocalPlaying(true)).catch(() => {})
     }
   }, [localPlaying])
 
   const toggleMute = useCallback(() => {
     const audio = getSharedAudio()
+    if (!audio) return
     const next = !muted
     audio.muted = next
     setMuted(next)
   }, [muted])
 
-  // Visualizer animation loop
+  // Visualizer RAF loop
   useEffect(() => {
     const animate = () => {
       rafRef.current = requestAnimationFrame(animate)
-      if (!analyserRef.current || !localPlaying) {
-        // decay bars to zero when paused
-        barsRef.current.forEach(b => {
-          if (b) b.style.height = '2px'
-        })
+      if (!sharedAnalyser || !localPlaying) {
+        barsRef.current.forEach(b => { if (b) b.style.height = '2px' })
         return
       }
-      analyserRef.current.getByteFrequencyData(dataRef.current)
+      sharedAnalyser.getByteFrequencyData(dataRef.current)
       const step = Math.floor(dataRef.current.length / BAR_COUNT)
       barsRef.current.forEach((b, i) => {
         if (!b) return
@@ -110,17 +104,17 @@ export default function MusicPlayer({ playing }: { playing: boolean }) {
     return () => cancelAnimationFrame(rafRef.current)
   }, [localPlaying])
 
-  if (!playing && !localPlaying) return null
-
   return (
     <div
       className="fixed bottom-6 right-6 flex items-end gap-3 z-[100] select-none"
       style={{
-        backgroundColor: 'rgba(5,5,5,0.88)',
+        backgroundColor: 'rgba(5,5,5,0.92)',
         border: '1px solid rgba(255,255,255,0.10)',
         backdropFilter: 'blur(12px)',
         padding: '10px 14px',
         borderRadius: '2px',
+        opacity: playing || localPlaying ? 1 : 0.35,
+        transition: 'opacity 0.4s ease',
       }}
       aria-label="Music player"
     >
@@ -144,7 +138,6 @@ export default function MusicPlayer({ playing }: { playing: boolean }) {
 
       {/* Controls */}
       <div className="flex items-center gap-2 ml-1">
-        {/* Play/Pause */}
         <button
           onClick={togglePlay}
           className="text-white/60 hover:text-white transition-colors focus:outline-none"
@@ -162,7 +155,6 @@ export default function MusicPlayer({ playing }: { playing: boolean }) {
           )}
         </button>
 
-        {/* Mute/Unmute */}
         <button
           onClick={toggleMute}
           className="text-white/60 hover:text-white transition-colors focus:outline-none"

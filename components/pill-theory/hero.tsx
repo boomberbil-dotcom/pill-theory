@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { useState, useCallback } from 'react'
-import { getSharedAudio, getSharedAnalyser } from './music-player'
+import { initSharedAudio } from './music-player'
 
 const WHITE_PILL_SRC = 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/white-VNazsF6iVh2pgvuOauKiBYHokQkdpB.png'
 
@@ -11,12 +11,9 @@ export default function Hero({ onMusicStart }: { onMusicStart?: () => void }) {
 
   const handleExplore = useCallback(() => {
     if (!clicked) {
-      // Init + start audio
-      const audio = getSharedAudio()
-      getSharedAnalyser() // wire up analyser node
-      audio.play().catch(() => {})
+      initSharedAudio() // unlock AudioContext on user gesture
       setClicked(true)
-      onMusicStart?.()
+      onMusicStart?.() // parent sets playing=true → MusicPlayer calls audio.play()
     }
     document.getElementById('manifesto')?.scrollIntoView({ behavior: 'smooth' })
   }, [clicked, onMusicStart])
