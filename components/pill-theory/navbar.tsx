@@ -4,14 +4,14 @@ import Image from 'next/image'
 import { useState, useEffect } from 'react'
 
 // ─── Set your contract address once here ───────────────────────
-const CONTRACT_ADDRESS = '0x0000000000000000000000000000000000000000'
+const CONTRACT_ADDRESS = '2duHe3Dc62DQiSPf9xRmAU3kJpf3WF1xmK9cEVfUpump'
 // ───────────────────────────────────────────────────────────────
 
 const NAV_LINKS = [
-  { label: 'Ideology',  href: '#manifesto' },
-  { label: 'Timeline',  href: '#timeline'  },
-  { label: 'Scanner',   href: '#scanner'   },
-  { label: 'Emerging',  href: '#emerging'  },
+  { label: 'Ideology', href: '#manifesto' },
+  { label: 'Timeline', href: '#timeline' },
+  { label: 'Scanner', href: '#scanner' },
+  { label: 'Emerging', href: '#emerging' },
 ]
 
 export default function Navbar() {
@@ -34,7 +34,7 @@ export default function Navbar() {
   }
 
   // Truncate address for display: 0x1234…abcd
-  const displayAddress = `${CONTRACT_ADDRESS.slice(0, 6)}…${CONTRACT_ADDRESS.slice(-4)}`
+  const displayAddress = CONTRACT_ADDRESS
 
   return (
     <header
@@ -84,12 +84,12 @@ export default function Navbar() {
           <span>{displayAddress}</span>
           {copied ? (
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-              <path d="M2 6L5 9L10 3" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M2 6L5 9L10 3" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           ) : (
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-              <rect x="4" y="1" width="7" height="8" rx="1" stroke="currentColor" strokeWidth="1"/>
-              <rect x="1" y="3" width="7" height="8" rx="1" stroke="currentColor" strokeWidth="1"/>
+              <rect x="4" y="1" width="7" height="8" rx="1" stroke="currentColor" strokeWidth="1" />
+              <rect x="1" y="3" width="7" height="8" rx="1" stroke="currentColor" strokeWidth="1" />
             </svg>
           )}
         </button>
