@@ -34,7 +34,7 @@ export default function Navbar() {
   }
 
   // Truncate address for display: 0x1234…abcd
-  const displayAddress = `${CONTRACT_ADDRESS.slice(0, 6)}…${CONTRACT_ADDRESS.slice(-4)}`
+  const displayAddress = CONTRACT_ADDRESS
 
   return (
     <header
