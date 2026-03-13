@@ -16,8 +16,8 @@ const spaceMono = Space_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Pill Theory — Archive of Ideological Awakenings',
-  description: 'A digital archive of ideological awakenings and internet philosophy.',
+  title: 'Agent Pill',
+  description: 'An Agent run digital archive of ideological pills and internet philosophy.',
 }
 
 export default function RootLayout({

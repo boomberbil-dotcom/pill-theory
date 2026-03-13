@@ -38,7 +38,7 @@ export default function Hero({ onMusicStart }: { onMusicStart?: () => void }) {
       {/* Edge fades */}
       <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to bottom, #050505 0%, transparent 12%, transparent 78%, #050505 100%)' }} aria-hidden="true" />
 
-      <h1 className="sr-only">Pill Theory</h1>
+      <h1 className="sr-only">Agent Pill</h1>
 
       {/* ── Bottom CTA ── */}
       <div className="absolute bottom-16 left-0 right-0 flex flex-col items-center gap-6 z-10">
