@@ -55,7 +55,7 @@ export default function Navbar() {
         >
           <Image src="/logo.png" alt="Pill Theory logo" width={28} height={28} className="rounded-sm object-cover" style={{ aspectRatio: '1/1' }} />
           <span className="font-sans font-black text-sm tracking-[0.2em] text-white uppercase hidden sm:block">
-            Agent Pill
+            Take the Pill
           </span>
         </a>
 
