@@ -16,8 +16,8 @@ const spaceMono = Space_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Agent Pill',
-  description: 'An Agent run digital archive of ideological pills and internet philosophy.',
+  title: 'The Pilll',
+  description: 'Only those that truly believe will take the pill and never look back.',
 }
 
 export default function RootLayout({

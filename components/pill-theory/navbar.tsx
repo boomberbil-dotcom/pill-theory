@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { useState, useEffect } from 'react'
 
 // ─── Set your contract address once here ───────────────────────
-const CONTRACT_ADDRESS = '7tmSVMumXTppibiNnfaXsJes2zFYEZpawRGZdDQupump'
+const CONTRACT_ADDRESS = '5xAmH2nPEcq4pgv4ggkrqG4hn7qzQzbPan5sm3rgpump'
 // ───────────────────────────────────────────────────────────────
 
 const NAV_LINKS = [
