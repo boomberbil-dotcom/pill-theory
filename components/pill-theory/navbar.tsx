@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { useState, useEffect } from 'react'
 
 // ─── Set your contract address once here ───────────────────────
-const CONTRACT_ADDRESS = '7tmSVMumXTppibiNnfaXsJes2zFYEZpawRGZdDQupump'
+const CONTRACT_ADDRESS = '5xAmH2nPEcq4pgv4ggkrqG4hn7qzQzbPan5sm3rgpump'
 // ───────────────────────────────────────────────────────────────
 
 const NAV_LINKS = [
@@ -55,7 +55,7 @@ export default function Navbar() {
         >
           <Image src="/logo.png" alt="Pill Theory logo" width={28} height={28} className="rounded-sm object-cover" style={{ aspectRatio: '1/1' }} />
           <span className="font-sans font-black text-sm tracking-[0.2em] text-white uppercase hidden sm:block">
-            Agent Pill
+            Take the Pill
           </span>
         </a>
 
